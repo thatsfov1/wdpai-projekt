@@ -1,3 +1,11 @@
 <?php
 
-echo "<h1>Hello world</h1>";
+echo  "<h1>Hello, World!</h1>";
+
+require_once 'src/controllers/SecurityController.php';
+include "Routing.php";
+
+$path = trim($_SERVER['REQUEST_URI'], '/');
+$path = parse_url($path, PHP_URL_PATH);
+
+Routing::run($path);    
