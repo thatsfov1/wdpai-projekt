@@ -1,7 +1,5 @@
 <?php
 
-echo  "<h1>Hello, World!</h1>";
-
 require_once 'src/controllers/SecurityController.php';
 include "Routing.php";
 
