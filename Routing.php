@@ -16,11 +16,6 @@ class Routing {
             'action' => 'register'
         ],
         
-        'category' => [
-            'controller' => 'CategoryController',
-            'action' => 'index'
-        ],
-        
         'worker' => [
             'controller' => 'WorkerController',
             'action' => 'index'
@@ -30,6 +25,22 @@ class Routing {
     public static function run(string $url) {
         $path = parse_url($url, PHP_URL_PATH);
         $path = trim($path, '/');
+        
+        // Obsługa ścieżek category/{slug}
+        if (preg_match('#^category/([a-z-]+)$#', $path, $matches)) {
+            require_once __DIR__ . '/src/controllers/CategoryController.php';
+            $controller = new CategoryController();
+            $controller->show($matches[1]);
+            return;
+        }
+        
+        // Obsługa ścieżek worker/{id}
+        if (preg_match('#^worker/(\d+)$#', $path, $matches)) {
+            require_once __DIR__ . '/src/controllers/WorkerController.php';
+            $controller = new WorkerController();
+            $controller->show((int)$matches[1]);
+            return;
+        }
         
         if(!isset(self::$routes[$path])) {
             http_response_code(404);

@@ -12,6 +12,11 @@
   font-size: 14px;
 }
 
+.nav-actions {
+  display: flex;
+  gap: 15px;
+}
+
 .logo {
   width: 100px;
 }
