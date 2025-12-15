@@ -12,6 +12,10 @@ body {
     color: #111618;
 }
 
+input, button, select, textarea {
+    font-family: "Work Sans", sans-serif;
+}
+
 .container {
     width: 100%;
     max-width: 1280px;
@@ -29,4 +33,20 @@ body {
     .container {
         padding: 0 15px;
     }
+}
+
+
+
+.btn.primary {
+  background: #6bb1ad;
+  color: white;
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+.btn.white {
+  background: white;
+  color: #ff8a65;
 }
