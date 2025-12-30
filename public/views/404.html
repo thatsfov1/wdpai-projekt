@@ -1,11 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/public/styles/main.css" />
+    <link rel="stylesheet" href="/public/styles/404.css" />
+    <link rel="stylesheet" href="/public/fontawesome/css/all.min.css" />
+    <title>404 - Strona nie znaleziona | FixUp</title>
+  </head>
+  <body>
+    <div class="error-page">
+      <div class="error-content">
+        <h1>404</h1>
+        <h2>Strona nie znaleziona</h2>
+        <p>
+          Strona której szukasz nie istnieje lub została przeniesiona
+        </p>
+        <div class="error-actions">
+          <a href="/" class="btn btn-primary">
+            <i class="fa-solid fa-home"></i> Strona główna
+          </a>
+          <a href="javascript:history.back()" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Wróć
+          </a>
+        </div>
+      </div>
+      <div class="error-illustration">
+        <img
+          src="/public/images/logo_fixup.svg"
+          alt="FixUp"
+          class="logo"
+        />
+      </div>
+    </div>
+  </body>
 </html>

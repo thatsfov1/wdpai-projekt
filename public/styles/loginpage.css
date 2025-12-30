@@ -1,0 +1,390 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+}
+
+.logo img {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.line {
+  width: 80vw;
+  height: 1px;
+  text-align: center;
+  background-color: #c8c8c8;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: 600;
+  color: #1c1c1e;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: -15px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+  background-color: white;
+}
+
+input:focus {
+  outline: none;
+  border-color: #72a5a5;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 45px;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.eye-icon .fa-eye {
+  display: none;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: #72a5a5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 600;
+  margin-top: 10px;
+  box-shadow: 0 4px 0 #5a8585, 0 6px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease;
+  transform: translateY(0);
+}
+
+button:hover {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 0 3px 0 #5a8585, 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(6px) scale(0.95);
+  box-shadow: 0 0 0 #5a8585, 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.footer-options {
+  margin-top: 25px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  font-size: 13px;
+}
+
+.footer-options a {
+  color: #5a9e9e;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-options a:hover {
+  text-decoration: underline;
+}
+
+.footer-options div {
+  display: flex;
+  gap: 5px;
+}
+
+.footer-options span {
+  color: #666;
+}
+
+.role-selector {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.role-option {
+  flex: 1;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.role-option input[type="radio"] {
+  display: none;
+}
+
+.role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 15px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.role-card i {
+  font-size: 28px;
+  color: #999;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
+}
+
+.role-card span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.role-card small {
+  font-size: 11px;
+  color: #888;
+}
+
+.role-option input[type="radio"]:checked + .role-card {
+  border-color: #72a5a5;
+  background-color: #f0f9f9;
+  box-shadow: 0 0 0 3px rgba(114, 165, 165, 0.15);
+}
+
+.role-option input[type="radio"]:checked + .role-card i {
+  color: #72a5a5;
+}
+
+.role-card:hover {
+  border-color: #aaa;
+}
+
+.role-option input[type="radio"]:checked + .role-card:hover {
+  border-color: #72a5a5;
+}
+
+.worker-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.worker-fields-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #72a5a5;
+  margin-bottom: 5px;
+}
+
+.worker-fields select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "Work Sans", sans-serif;
+  background-color: white;
+  cursor: pointer;
+}
+
+.worker-fields select:focus {
+  outline: none;
+  border-color: #72a5a5;
+}
+
+.worker-fields textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "Work Sans", sans-serif;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.worker-fields textarea:focus {
+  outline: none;
+  border-color: #72a5a5;
+}
+
+.no-valid {
+  border-color: #e74c3c !important;
+  background-color: #fdf2f2 !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.no-valid:focus {
+  border-color: #c0392b !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+}
+
+.valid {
+  border-color: #27ae60 !important;
+  background-color: #f0fdf4 !important;
+}
+
+.valid:focus {
+  border-color: #1e8449 !important;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.15);
+}
+
+.validation-error {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  padding-left: 2px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.message.error {
+  background-color: #fdf2f2;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+}
+
+.message.success {
+  background-color: #f0fdf4;
+  color: #1e8449;
+  border: 1px solid #a3cfbb;
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 24px;
+  }
+
+  form {
+    max-width: 100%;
+  }
+
+  .footer-options {
+    max-width: 100%;
+  }
+
+  .role-selector {
+    flex-direction: column;
+  }
+
+  .role-card {
+    flex-direction: row;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .role-card i {
+    margin-bottom: 0;
+  }
+
+  .role-card span,
+  .role-card small {
+    text-align: left;
+  }
+}

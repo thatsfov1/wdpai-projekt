@@ -1,145 +1,94 @@
 <?php
 
+require_once __DIR__ . '/../repository/CategoryRepository.php';
+require_once __DIR__ . '/../repository/WorkerRepository.php';
+require_once __DIR__ . '/../repository/ServiceRepository.php';
+require_once __DIR__ . '/SecurityController.php';
+
 class CategoryController {
     
-    // Dane kategorii - w przyszłości będą pobierane z PostgreSQL
-    private $categories = [
-        'plumbing' => [
-            'name' => 'Hydraulika',
-            'description' => 'Profesjonalne usługi hydrauliczne',
-            'icon' => 'plumbing.svg'
-        ],
-        'electricity' => [
-            'name' => 'Elektryka',
-            'description' => 'Usługi elektryczne i instalacyjne',
-            'icon' => 'lightning.svg'
-        ],
-        'cleaning' => [
-            'name' => 'Sprzątanie',
-            'description' => 'Profesjonalne usługi sprzątające',
-            'icon' => 'cleaning.svg'
-        ],
-        'painting' => [
-            'name' => 'Malowanie',
-            'description' => 'Usługi malarskie i dekoracyjne',
-            'icon' => 'painting.svg'
-        ],
-        'furniture-assembly' => [
-            'name' => 'Montaż mebli',
-            'description' => 'Składanie i montaż mebli',
-            'icon' => 'sofa.svg'
-        ],
-        'installation' => [
-            'name' => 'Instalacja',
-            'description' => 'Montaż sprzętu AGD i RTV',
-            'icon' => 'installation.svg'
-        ],
-        'air-conditioning' => [
-            'name' => 'Klimatyzacja',
-            'description' => 'Montaż i serwis klimatyzacji',
-            'icon' => 'air-conditioning.svg'
-        ],
-        'maintenance' => [
-            'name' => 'Konserwacja',
-            'description' => 'Przeglądy i naprawy urządzeń',
-            'icon' => 'maintenance.svg'
-        ]
-    ];
-    
-    // Przykładowi fachowcy - w przyszłości z PostgreSQL
-    private $workers = [
-        [
-            'id' => 1,
-            'name' => 'Jan Kowalski',
-            'address' => 'ul. Krakowska 15, 31-001 Kraków',
-            'image' => 'person1.png',
-            'services' => [
-                ['name' => 'Naprawa kranów', 'price' => 80],
-                ['name' => 'Udrażnianie rur', 'price' => 150],
-                ['name' => 'Montaż baterii', 'price' => 120]
-            ]
-        ],
-        [
-            'id' => 2,
-            'name' => 'Anna Nowak',
-            'address' => 'ul. Długa 42, 31-147 Kraków',
-            'image' => 'person2.png',
-            'services' => [
-                ['name' => 'Instalacja gniazdek', 'price' => 60],
-                ['name' => 'Wymiana włączników', 'price' => 45],
-                ['name' => 'Montaż lamp', 'price' => 90]
-            ]
-        ],
-        [
-            'id' => 3,
-            'name' => 'Piotr Zieliński',
-            'address' => 'ul. Marszałkowska 100, 00-001 Warszawa',
-            'image' => 'person3.png',
-            'services' => [
-                ['name' => 'Malowanie ścian', 'price' => 25],
-                ['name' => 'Malowanie sufitu', 'price' => 30],
-                ['name' => 'Gładzie gipsowe', 'price' => 40]
-            ]
-        ],
-        [
-            'id' => 4,
-            'name' => 'Ewa Mazur',
-            'address' => 'ul. Floriańska 8, 31-021 Kraków',
-            'image' => 'person4.png',
-            'services' => [
-                ['name' => 'Sprzątanie mieszkania', 'price' => 120],
-                ['name' => 'Mycie okien', 'price' => 80],
-                ['name' => 'Sprzątanie po remoncie', 'price' => 200]
-            ]
-        ],
-        [
-            'id' => 5,
-            'name' => 'Tomasz Wiśniewski',
-            'address' => 'ul. Gdańska 25, 80-001 Gdańsk',
-            'image' => 'person1.png',
-            'services' => [
-                ['name' => 'Montaż szafy', 'price' => 150],
-                ['name' => 'Montaż kuchni IKEA', 'price' => 400],
-                ['name' => 'Składanie łóżka', 'price' => 100]
-            ]
-        ],
-        [
-            'id' => 6,
-            'name' => 'Maria Kaczmarek',
-            'address' => 'ul. Świdnicka 33, 50-066 Wrocław',
-            'image' => 'person2.png',
-            'services' => [
-                ['name' => 'Serwis klimatyzacji', 'price' => 200],
-                ['name' => 'Montaż klimatyzatora', 'price' => 500],
-                ['name' => 'Czyszczenie klimatyzacji', 'price' => 150]
-            ]
-        ],
-    ];
-    
     public function show(string $slug) {
-        if (!isset($this->categories[$slug])) {
+        $categoryRepo = new CategoryRepository();
+        $workerRepo = new WorkerRepository();
+        $serviceRepo = new ServiceRepository();
+        
+        $category = $categoryRepo->findBySlug($slug);
+        
+        if (!$category) {
             http_response_code(404);
             include __DIR__ . '/../../public/views/404.html';
             return;
         }
         
-        $category = $this->categories[$slug];
-        $categorySlug = $slug;
+        $city = trim($_GET['city'] ?? '');
+        $sort = trim($_GET['sort'] ?? 'rating');
+        $minRating = isset($_GET['min_rating']) ? floatval($_GET['min_rating']) : null;
+        $minExperience = isset($_GET['min_experience']) ? intval($_GET['min_experience']) : null;
+        $priceFrom = isset($_GET['price_from']) ? floatval($_GET['price_from']) : null;
+        $priceTo = isset($_GET['price_to']) ? floatval($_GET['price_to']) : null;
+        
+        $allWorkers = $workerRepo->findByCategorySlugWithFilters(
+            $slug, 
+            $city ?: null, 
+            $sort ?: null,
+            $minRating,
+            $minExperience,
+            $priceFrom,
+            $priceTo
+        );
+        
+        $categoriesRaw = $categoryRepo->findAll();
+        $categories = [];
+        foreach ($categoriesRaw as $cat) {
+            $categories[$cat['slug']] = $cat;
+        }
+        
+        $user = SecurityController::getCurrentUser();
+        
         $categoryName = $category['name'];
-        $categoryDescription = $category['description'];
-        $categoryIcon = $category['icon'];
+        $categorySlug = $category['slug'];
+        $categoryDescription = 'Znajdź najlepszych fachowców w kategorii ' . $category['name'];
         
-        // W przyszłości: pobierz fachowców z bazy danych
-        $workers = $this->workers;
-        $categories = $this->categories;
-        
-        // Paginacja - w przyszłości z parametrów GET
         $currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-        $totalWorkers = count($workers);
         $perPage = 4;
-        $totalPages = ceil($totalWorkers / $perPage);
+        $totalWorkers = count($allWorkers);
+        $totalPages = max(1, ceil($totalWorkers / $perPage));
+        $currentPage = min($currentPage, $totalPages);
+        
+        $offset = ($currentPage - 1) * $perPage;
+        $workersSlice = array_slice($allWorkers, $offset, $perPage);
+        
+        $workers = [];
+        foreach ($workersSlice as $w) {
+            $services = $serviceRepo->findByWorkerId($w['id']);
+            $formattedServices = [];
+            foreach ($services as $s) {
+                $formattedServices[] = [
+                    'name' => $s['name'],
+                    'price' => $s['price'] ?? 0
+                ];
+            }
+            
+            if (empty($formattedServices)) {
+                $formattedServices[] = [
+                    'name' => 'Usługa standardowa',
+                    'price' => 0
+                ];
+            }
+            
+            $workers[] = [
+                'id' => $w['id'],
+                'name' => $w['name'],
+                'image' => $w['profile_image'] 
+                    ? '/uploads/profiles/' . $w['profile_image'] 
+                    : '/public/images/default-avatar.svg',
+                'address' => $w['city'] ?? 'Brak adresu',
+                'rating' => $w['rating'] ?? 0,
+                'reviews_count' => $w['reviews_count'] ?? 0,
+                'services' => $formattedServices
+            ];
+        }
         
         include __DIR__ . '/../../public/views/categorypage.php';
     }
 }
-

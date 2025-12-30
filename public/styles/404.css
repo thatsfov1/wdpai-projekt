@@ -1,0 +1,147 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+  min-height: 100vh;
+}
+
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.error-content {
+  max-width: 500px;
+}
+
+.error-icon {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #72a5a5 0%, #5a8f8f 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  box-shadow: 0 10px 40px rgba(114, 165, 165, 0.3);
+}
+
+.error-icon i {
+  font-size: 48px;
+  color: #fff;
+}
+
+.error-content h1 {
+  font-size: 120px;
+  font-weight: 800;
+  color: #72a5a5;
+  line-height: 1;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 0 rgba(114, 165, 165, 0.2);
+}
+
+.error-content h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+.error-content p {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #72a5a5 0%, #5a8f8f 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(114, 165, 165, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(114, 165, 165, 0.4);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #4b5563;
+  border: 2px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.error-illustration {
+  margin-top: 50px;
+}
+
+.error-logo {
+  height: 40px;
+  opacity: 0.6;
+  filter: grayscale(30%);
+}
+
+@media (max-width: 480px) {
+  .error-content h1 {
+    font-size: 80px;
+  }
+
+  .error-content h2 {
+    font-size: 22px;
+  }
+
+  .error-icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  .error-icon i {
+    font-size: 40px;
+  }
+
+  .error-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
