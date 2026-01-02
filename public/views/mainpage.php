@@ -24,7 +24,7 @@
       <div class="burger-dropdown">
         <a href="#categories"><i class="fa-solid fa-th-large"></i> Usługi</a>
         <a href="#steps"><i class="fa-solid fa-circle-question"></i> Jak to działa</a>
-        <a href="/register"><i class="fa-solid fa-briefcase"></i> Dla Fachowców</a>
+        <a href="/register?role=worker"><i class="fa-solid fa-briefcase"></i> Dla Fachowców</a>
         <div class="dropdown-divider"></div>
         <?php if ($user): ?>
           <a href="/profile"><i class="fa-solid fa-user"></i> Mój profil</a>
@@ -39,7 +39,7 @@
       <nav class="nav-links">
         <a href="#categories">Usługi</a>
         <a href="#steps">Jak to działa</a>
-        <a href="/register">Dla Fachowców</a>
+        <a href="/register?role=worker">Dla Fachowców</a>
       </nav>
 
       <div class="nav-actions">
@@ -142,7 +142,7 @@
 
         <div class="expert-list">
           <?php if (empty($featuredWorkers)): ?>
-            <p class="no-workers">Brak fachowców do wyświetlenia. <a href="/register">Zarejestruj się jako fachowiec!</a></p>
+            <p class="no-workers">Brak fachowców do wyświetlenia. <a href="/register?role=worker">Zarejestruj się jako fachowiec!</a></p>
           <?php else: ?>
             <?php foreach ($featuredWorkers as $worker): ?>
               <a href="/worker/<?= $worker['id'] ?>" class="expert">
@@ -190,7 +190,7 @@
         <div class="cta-box dark">
           <h3>Jesteś fachowcem?</h3>
           <p>Zdobądź nowych klientów i rozwijaj swój biznes z nami.</p>
-          <a href="/register" class="btn btn-white">Dołącz jako fachowiec</a>
+          <a href="/register?role=worker" class="btn btn-white">Dołącz jako fachowiec</a>
         </div>
       </div>
     </section>

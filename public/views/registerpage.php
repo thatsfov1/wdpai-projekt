@@ -83,12 +83,15 @@
 
           <label>Typ konta</label>
           <div class="role-selector">
+            <?php 
+              $selectedRole = $_POST['role'] ?? $_GET['role'] ?? 'client';
+            ?>
             <label class="role-option">
               <input
                 type="radio"
                 name="role"
                 value="client"
-                <?= (!isset($_POST['role']) || $_POST['role'] === 'client') ? 'checked' : '' ?>
+                <?= ($selectedRole === 'client') ? 'checked' : '' ?>
               />
               <div class="role-card">
                 <i class="fa-solid fa-user"></i>
@@ -101,7 +104,7 @@
                 type="radio"
                 name="role"
                 value="worker"
-                <?= (isset($_POST['role']) && $_POST['role'] === 'worker') ? 'checked' : '' ?>
+                <?= ($selectedRole === 'worker') ? 'checked' : '' ?>
               />
               <div class="role-card">
                 <i class="fa-solid fa-tools"></i>
