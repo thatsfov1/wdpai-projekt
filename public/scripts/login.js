@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const passwordWrappers = document.querySelectorAll('.password-wrapper');
 
-    passwordWrappers.forEach(function (wrapper) {
+    passwordWrappers.forEach((wrapper) => {
         const toggleWrapper = wrapper.querySelector('.eye-icon');
         const passwordInput = wrapper.querySelector('input[type="password"], input[type="text"]');
         const eyeOpen = wrapper.querySelector('.fa-eye');
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!toggleWrapper || !passwordInput || !eyeOpen || !eyeClosed) return;
 
-        toggleWrapper.addEventListener('click', function () {
+        toggleWrapper.addEventListener('click', () => {
             const isPassword = passwordInput.getAttribute('type') === 'password';
 
             if (isPassword) {

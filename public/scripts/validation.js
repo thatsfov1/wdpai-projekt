@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('form');
     if (!form) return;
 
@@ -14,19 +14,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const DEBOUNCE_DELAY = 1000;
 
-    function isEmail(email) {
+    const isEmail = (email) => {
         return /\S+@\S+\.\S+/.test(email);
     }
 
-    function isStrongPassword(password) {
+    const isStrongPassword = (password) => {
         return password.length >= 6;
     }
 
-    function arePasswordsSame(password, confirmedPassword) {
+    const arePasswordsSame = (password, confirmedPassword) => {
         return password === confirmedPassword && confirmedPassword.length > 0;
     }
 
-    function isValidName(name) {
+    const isValidName = (name) => {
         if (name.length < 2) {
             return false;
         }
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return nameRegex.test(name);
     }
 
-    function markValidation(element, condition) {
+    const markValidation = (element, condition) => {
         if (!element) return;
 
         if (!condition) {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function showError(element, message) {
+    const showError = (element, message) => {
         if (!element) return;
 
         removeError(element);
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
         wrapper.parentNode.insertBefore(errorDiv, wrapper.nextSibling);
     }
 
-    function removeError(element) {
+    const removeError = (element) => {
         if (!element) return;
 
         const wrapper = element.closest('.password-wrapper') || element;
@@ -69,11 +69,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function validateEmail() {
+    const validateEmail = () => {
         if (!emailInput) return;
 
         clearTimeout(emailTimer);
-        emailTimer = setTimeout(function () {
+        emailTimer = setTimeout(() => {
             const isValid = isEmail(emailInput.value);
             markValidation(emailInput, isValid);
 
@@ -85,11 +85,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }, DEBOUNCE_DELAY);
     }
 
-    function validatePassword() {
+    const validatePassword = () => {
         if (!passwordInput) return;
 
         clearTimeout(passwordTimer);
-        passwordTimer = setTimeout(function () {
+        passwordTimer = setTimeout(() => {
             const isValid = isStrongPassword(passwordInput.value);
             markValidation(passwordInput, isValid);
 
@@ -105,11 +105,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }, DEBOUNCE_DELAY);
     }
 
-    function validateConfirmPassword() {
+    const validateConfirmPassword = () => {
         if (!confirmedPasswordInput || !passwordInput) return;
 
         clearTimeout(confirmPasswordTimer);
-        confirmPasswordTimer = setTimeout(function () {
+        confirmPasswordTimer = setTimeout(() => {
             const isValid = arePasswordsSame(passwordInput.value, confirmedPasswordInput.value);
             markValidation(confirmedPasswordInput, isValid);
 
@@ -121,11 +121,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }, DEBOUNCE_DELAY);
     }
 
-    function validateName() {
+    const validateName = () => {
         if (!nameInput) return;
 
         clearTimeout(nameTimer);
-        nameTimer = setTimeout(function () {
+        nameTimer = setTimeout(() => {
             const isValid = isValidName(nameInput.value);
             markValidation(nameInput, isValid);
 
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (emailInput) {
         emailInput.addEventListener('keyup', validateEmail);
-        emailInput.addEventListener('blur', function () {
+        emailInput.addEventListener('blur', () => {
             clearTimeout(emailTimer);
             const isValid = isEmail(emailInput.value);
             markValidation(emailInput, isValid);
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (passwordInput) {
         passwordInput.addEventListener('keyup', validatePassword);
-        passwordInput.addEventListener('blur', function () {
+        passwordInput.addEventListener('blur', () => {
             clearTimeout(passwordTimer);
             const isValid = isStrongPassword(passwordInput.value);
             markValidation(passwordInput, isValid);
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (confirmedPasswordInput) {
         confirmedPasswordInput.addEventListener('keyup', validateConfirmPassword);
-        confirmedPasswordInput.addEventListener('blur', function () {
+        confirmedPasswordInput.addEventListener('blur', () => {
             clearTimeout(confirmPasswordTimer);
             const isValid = arePasswordsSame(passwordInput.value, confirmedPasswordInput.value);
             markValidation(confirmedPasswordInput, isValid);
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (nameInput) {
         nameInput.addEventListener('keyup', validateName);
-        nameInput.addEventListener('blur', function () {
+        nameInput.addEventListener('blur', () => {
             clearTimeout(nameTimer);
             const isValid = isValidName(nameInput.value);
             markValidation(nameInput, isValid);
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', (e) => {
         let isFormValid = true;
         const errors = [];
 

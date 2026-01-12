@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('filtersModal');
     const openBtn = document.getElementById('openFilters');
     const closeBtn = document.getElementById('closeFilters');
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function buildUrl(params) {
+    const buildUrl = (params) => {
         const url = new URL(window.location.href);
         Object.entries(params).forEach(([key, value]) => {
             if (value) {
@@ -48,13 +48,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (sortSelect) {
-        sortSelect.addEventListener('change', function () {
+        sortSelect.addEventListener('change', () => {
             window.location.href = buildUrl({ sort: this.value });
         });
     }
 
     if (applyBtn) {
-        applyBtn.addEventListener('click', function () {
+        applyBtn.addEventListener('click', () => {
             const cityInput = modal.querySelector('input[placeholder*="miasto"]');
             const priceFromInput = modal.querySelector('input[placeholder="Od"]');
             const priceToInput = modal.querySelector('input[placeholder="Do"]');

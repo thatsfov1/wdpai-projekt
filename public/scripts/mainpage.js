@@ -1,15 +1,15 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () =>{
     const profileDropdown = document.querySelector('.profile-dropdown');
 
     if (profileDropdown) {
         const trigger = profileDropdown.querySelector('.profile-trigger');
 
-        trigger.addEventListener('click', function (e) {
+        trigger.addEventListener('click', (e) => {
             e.stopPropagation();
             profileDropdown.classList.toggle('active');
         });
 
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', (e) => {
             if (!profileDropdown.contains(e.target)) {
                 profileDropdown.classList.remove('active');
             }
@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const burgerDropdown = document.querySelector('.burger-dropdown');
 
     if (burgerMenu && burgerDropdown) {
-        burgerMenu.addEventListener('click', function (e) {
+        burgerMenu.addEventListener('click', (e) => {
             e.stopPropagation();
             burgerMenu.classList.toggle('active');
             burgerDropdown.classList.toggle('active');
         });
 
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', (e) => {
             if (!burgerMenu.contains(e.target) && !burgerDropdown.contains(e.target)) {
                 burgerMenu.classList.remove('active');
                 burgerDropdown.classList.remove('active');
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         burgerDropdown.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function () {
+            link.addEventListener('click', () => {
                 burgerMenu.classList.remove('active');
                 burgerDropdown.classList.remove('active');
             });
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+        anchor.addEventListener('click', (e) => {
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
 
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    window.addEventListener('resize', function () {
+    window.addEventListener('resize', () => {
         if (window.innerWidth > 768) {
             if (burgerMenu) burgerMenu.classList.remove('active');
             if (burgerDropdown) burgerDropdown.classList.remove('active');

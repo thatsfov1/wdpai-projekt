@@ -1,9 +1,9 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const phoneInput = document.getElementById('phone');
     const form = document.querySelector('.profile-form');
 
     if (phoneInput && form) {
-        phoneInput.addEventListener('input', function () {
+        phoneInput.addEventListener('input', () => {
             const value = this.value.trim();
             const phoneRegex = /^\+48\s?\d{3}\s?\d{3}\s?\d{3}$|^\+48\d{9}$/;
 

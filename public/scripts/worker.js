@@ -32,12 +32,12 @@ document.querySelectorAll('.time-slot').forEach(slot => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const bookingForm = document.getElementById('bookingForm');
     const dateInput = document.getElementById('booking_date');
 
     if (bookingForm && dateInput) {
-        function updateTimeSlots() {
+        const updateTimeSlots = () => {
             const selectedDate = dateInput.value;
             const today = new Date().toISOString().split('T')[0];
             const now = new Date();
@@ -80,13 +80,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updateTimeSlots();
 
-        bookingForm.addEventListener('submit', function (e) {
+        bookingForm.addEventListener('submit', (e) => {
             const selectedDate = dateInput.value;
             const selectedTime = document.querySelector('.time-slot-label input[type="radio"]:checked');
 
             if (!selectedTime) {
                 e.preventDefault();
-                alert('Proszę wybrać godzinę rezerwacji.');
+                alert('Proszę wybrać godzinę rezerwacji');
                 return;
             }
 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (reservationTime <= now) {
                     e.preventDefault();
-                    alert('Nie można zarezerwować terminu w przeszłości. Wybierz późniejszą godzinę.');
+                    alert('Nie można zarezerwować terminu w przeszłości. Wybierz późniejszą godzinę');
                     return;
                 }
             }
