@@ -28,7 +28,7 @@ body {
 .error-icon {
   width: 120px;
   height: 120px;
-  background: linear-gradient(135deg, #72a5a5 0%, #5a8f8f 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -45,7 +45,7 @@ body {
 .error-content h1 {
   font-size: 120px;
   font-weight: 800;
-  color: #72a5a5;
+  color: var(--color-primary);
   line-height: 1;
   margin-bottom: 10px;
   text-shadow: 2px 2px 0 rgba(114, 165, 165, 0.2);
@@ -54,13 +54,13 @@ body {
 .error-content h2 {
   font-size: 28px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--color-text-dark);
   margin-bottom: 16px;
 }
 
 .error-content p {
   font-size: 16px;
-  color: #6b7280;
+  color: var(--color-text-light);
   line-height: 1.6;
   margin-bottom: 32px;
 }
@@ -87,7 +87,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #72a5a5 0%, #5a8f8f 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: #fff !important;
   box-shadow: 0 4px 15px rgba(114, 165, 165, 0.3);
 }
@@ -100,7 +100,7 @@ body {
 .btn-secondary {
   background: #fff;
   color: #4b5563;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--color-border);
 }
 
 .btn-secondary:hover {

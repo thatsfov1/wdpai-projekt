@@ -11,17 +11,17 @@
 .page-header h1 {
     font-size: 32px;
     font-weight: 700;
-    color: #111618;
+    color: var(--color-text-dark);
     margin-bottom: 10px;
 }
 
 .page-header h1 i {
-    color: #72a5a5;
+    color: var(--color-primary);
     margin-right: 10px;
 }
 
 .page-header p {
-    color: #666;
+    color: var(--color-text-muted);
     font-size: 16px;
 }
 
@@ -56,7 +56,7 @@
     display: flex;
     gap: 8px;
     margin-bottom: 30px;
-    border-bottom: 2px solid #e5e7eb;
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0;
 }
 
@@ -67,7 +67,7 @@
     padding: 14px 24px;
     font-size: 15px;
     font-weight: 600;
-    color: #666;
+    color: var(--color-text-muted);
     border-radius: 12px 12px 0 0;
     transition: all 0.2s ease;
     position: relative;
@@ -78,14 +78,14 @@
 }
 
 .tab:hover {
-    color: #72a5a5;
-    background: #f5f5f5;
+    color: var(--color-primary);
+    background: var(--color-bg);
 }
 
 .tab.active {
-    color: #72a5a5;
+    color: var(--color-primary);
     background: #fff;
-    border-color: #e5e7eb;
+    border-color: var(--color-border);
 }
 
 .tab i {
@@ -93,7 +93,7 @@
 }
 
 .tab-badge {
-    background: #72a5a5;
+    background: var(--color-primary);
     color: white;
     font-size: 11px;
     font-weight: 700;
@@ -119,12 +119,12 @@
 
 .empty-state h3 {
     font-size: 20px;
-    color: #333;
+    color: var(--color-text);
     margin-bottom: 10px;
 }
 
 .empty-state p {
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: 24px;
 }
 
@@ -141,7 +141,7 @@
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--color-border);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -164,7 +164,7 @@
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #72a5a5;
+    border: 3px solid var(--color-primary);
 }
 
 .reservation-details {
@@ -183,7 +183,7 @@
 .reservation-header h3 {
     font-size: 18px;
     font-weight: 600;
-    color: #111618;
+    color: var(--color-text-dark);
     margin: 0;
 }
 
@@ -193,7 +193,7 @@
 }
 
 .reservation-header h3 a:hover {
-    color: #72a5a5;
+    color: var(--color-primary);
 }
 
 .status-badge {
@@ -230,7 +230,7 @@
 .reservation-notes,
 .reservation-phone {
     font-size: 14px;
-    color: #666;
+    color: var(--color-text-muted);
     margin: 6px 0;
     display: flex;
     align-items: center;
@@ -241,13 +241,13 @@
 .reservation-service i,
 .reservation-notes i,
 .reservation-phone i {
-    color: #72a5a5;
+    color: var(--color-primary);
     width: 16px;
     text-align: center;
 }
 
 .reservation-phone a {
-    color: #72a5a5;
+    color: var(--color-primary);
     font-weight: 500;
 }
 
@@ -265,11 +265,11 @@
     gap: 8px;
     font-size: 15px;
     font-weight: 600;
-    color: #333;
+    color: var(--color-text);
 }
 
 .reservation-datetime i {
-    color: #72a5a5;
+    color: var(--color-primary);
 }
 
 .reservation-actions {
@@ -357,7 +357,7 @@
 .modal-header h2 {
     font-size: 20px;
     font-weight: 600;
-    color: #111618;
+    color: var(--color-text-dark);
     margin: 0;
     display: flex;
     align-items: center;
@@ -365,11 +365,11 @@
 }
 
 .modal-header h2 i {
-    color: #facc15;
+    color: var(--color-star);
 }
 
 .modal-close {
-    background: #f5f5f5;
+    background: var(--color-bg);
     border: none;
     width: 36px;
     height: 36px;
@@ -378,7 +378,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #666;
+    color: var(--color-text-muted);
     transition: background 0.2s ease;
     box-shadow: none;
     padding: 0;
@@ -395,7 +395,7 @@
 
 .review-worker-name {
     font-size: 16px;
-    color: #72a5a5;
+    color: var(--color-primary);
     font-weight: 600;
     margin-bottom: 20px;
     text-align: center;
@@ -409,7 +409,7 @@
     display: block;
     font-size: 14px;
     font-weight: 500;
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: 12px;
 }
 
@@ -434,7 +434,7 @@
 .star-rating label:hover,
 .star-rating label:hover ~ label,
 .star-rating input:checked ~ label {
-    color: #facc15;
+    color: var(--color-star);
 }
 
 .star-rating label:hover {
@@ -449,7 +449,7 @@
     display: block;
     font-size: 14px;
     font-weight: 500;
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: 8px;
 }
 
@@ -466,7 +466,7 @@
 
 .form-group textarea:focus {
     outline: none;
-    border-color: #72a5a5;
+    border-color: var(--color-primary);
 }
 
 .image-upload {
@@ -495,11 +495,11 @@
     font-size: 32px;
     display: block;
     margin-bottom: 10px;
-    color: #72a5a5;
+    color: var(--color-primary);
 }
 
 .image-upload:hover .upload-placeholder {
-    border-color: #72a5a5;
+    border-color: var(--color-primary);
     background: #f8fafa;
 }
 
@@ -515,7 +515,7 @@
     height: 80px;
     object-fit: cover;
     border-radius: 8px;
-    border: 2px solid #72a5a5;
+    border: 2px solid var(--color-primary);
 }
 
 .modal-footer {

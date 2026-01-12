@@ -41,7 +41,7 @@
 h2 {
   font-size: 36px;
   font-weight: 600;
-  color: #1c1c1e;
+  color: var(--color-text-dark);
   margin-bottom: 25px;
   text-align: center;
 }
@@ -57,7 +57,7 @@ form {
 label {
   font-size: 13px;
   font-weight: 500;
-  color: #666;
+  color: var(--color-text-muted);
   margin-bottom: -15px;
 }
 
@@ -73,7 +73,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #72a5a5;
+  border-color: var(--color-primary);
 }
 
 input::placeholder {
@@ -110,7 +110,7 @@ input::placeholder {
 button {
   width: 100%;
   padding: 14px;
-  background-color: #72a5a5;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   border-radius: 12px;
@@ -119,19 +119,19 @@ button {
   font-family: "Work Sans", sans-serif;
   font-weight: 600;
   margin-top: 10px;
-  box-shadow: 0 4px 0 #5a8585, 0 6px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 0 var(--color-primary-dark), 0 6px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.15s ease;
   transform: translateY(0);
 }
 
 button:hover {
   transform: translateY(2px) scale(0.98);
-  box-shadow: 0 3px 0 #5a8585, 0 6px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 0 var(--color-primary-dark), 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 button:active {
   transform: translateY(6px) scale(0.95);
-  box-shadow: 0 0 0 #5a8585, 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0 var(--color-primary-dark), 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .footer-options {
@@ -146,7 +146,7 @@ button:active {
 }
 
 .footer-options a {
-  color: #5a9e9e;
+  color: var(--color-primary-dark);
   text-decoration: none;
   font-weight: 500;
 }
@@ -161,7 +161,7 @@ button:active {
 }
 
 .footer-options span {
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .role-selector {
@@ -203,7 +203,7 @@ button:active {
 .role-card span {
   font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 4px;
 }
 
@@ -213,13 +213,13 @@ button:active {
 }
 
 .role-option input[type="radio"]:checked + .role-card {
-  border-color: #72a5a5;
+  border-color: var(--color-primary);
   background-color: #f0f9f9;
   box-shadow: 0 0 0 3px rgba(114, 165, 165, 0.15);
 }
 
 .role-option input[type="radio"]:checked + .role-card i {
-  color: #72a5a5;
+  color: var(--color-primary);
 }
 
 .role-card:hover {
@@ -227,7 +227,7 @@ button:active {
 }
 
 .role-option input[type="radio"]:checked + .role-card:hover {
-  border-color: #72a5a5;
+  border-color: var(--color-primary);
 }
 
 .worker-fields {
@@ -258,7 +258,7 @@ button:active {
   gap: 10px;
   font-size: 14px;
   font-weight: 600;
-  color: #72a5a5;
+  color: var(--color-primary);
   margin-bottom: 5px;
 }
 
@@ -275,7 +275,7 @@ button:active {
 
 .worker-fields select:focus {
   outline: none;
-  border-color: #72a5a5;
+  border-color: var(--color-primary);
 }
 
 .worker-fields textarea {
@@ -291,11 +291,11 @@ button:active {
 
 .worker-fields textarea:focus {
   outline: none;
-  border-color: #72a5a5;
+  border-color: var(--color-primary);
 }
 
 .no-valid {
-  border-color: #e74c3c !important;
+  border-color: var(--color-danger) !important;
   background-color: #fdf2f2 !important;
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
 }
@@ -316,7 +316,7 @@ button:active {
 }
 
 .validation-error {
-  color: #e74c3c;
+  color: var(--color-danger);
   font-size: 12px;
   margin-top: 5px;
   padding-left: 2px;
