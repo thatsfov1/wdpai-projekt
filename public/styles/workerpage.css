@@ -28,7 +28,7 @@
 .login-btn,
 .register-btn {
   font-family: inherit;
-  color: #fff;
+  color: #fff !important;
   font-weight: 700;
   text-decoration: none;
   font-size: 14px;

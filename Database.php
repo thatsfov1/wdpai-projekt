@@ -34,9 +34,9 @@ class Database {
                     ]
                 );
             } catch (PDOException $e) {
-                error_log("Database connection failed: " . $e->getMessage());
+                error_log("Polaczenie nie powiodlo sie: " . $e->getMessage());
                 
-                throw new Exception("Unable to connect to database. Please try again later.");
+                throw new Exception("Pomylka polaczenia z baza danych");
             }
         }
         return self::$connection;
