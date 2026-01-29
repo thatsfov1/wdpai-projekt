@@ -372,6 +372,161 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- wyzwalacze
+
+-- automatyczna aktualizacja ratingu i liczby recenzji po dodaniu recenzji
+CREATE OR REPLACE FUNCTION update_worker_rating_on_review()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE workers
+    SET 
+        rating = calculate_worker_rating(NEW.worker_id),
+        reviews_count = count_worker_reviews(NEW.worker_id)
+    WHERE id = NEW.worker_id;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_update_rating_after_review ON reviews;
+CREATE TRIGGER trg_update_rating_after_review
+    AFTER INSERT ON reviews
+    FOR EACH ROW
+    EXECUTE FUNCTION update_worker_rating_on_review();
+
+-- aktualizacja ratingu po usunieciu recenzji
+CREATE OR REPLACE FUNCTION update_worker_rating_on_review_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE workers
+    SET 
+        rating = calculate_worker_rating(OLD.worker_id),
+        reviews_count = count_worker_reviews(OLD.worker_id)
+    WHERE id = OLD.worker_id;
+    
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_update_rating_after_review_delete ON reviews;
+CREATE TRIGGER trg_update_rating_after_review_delete
+    AFTER DELETE ON reviews
+    FOR EACH ROW
+    EXECUTE FUNCTION update_worker_rating_on_review_delete();
+
+-- automatyczna aktualizacja updated_at przy zmianie rezerwacji
+CREATE OR REPLACE FUNCTION update_reservation_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_reservation_updated ON reservations;
+CREATE TRIGGER trg_reservation_updated
+    BEFORE UPDATE ON reservations
+    FOR EACH ROW
+    EXECUTE FUNCTION update_reservation_timestamp();
+
+-- walidacja daty rezerwacji
+CREATE OR REPLACE FUNCTION validate_reservation_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.reservation_date < CURRENT_DATE THEN
+        RAISE EXCEPTION 'Nie można utworzyć rezerwacji na datę w przeszłości';
+    END IF;
+    
+    IF NEW.reservation_date = CURRENT_DATE AND NEW.reservation_time < CURRENT_TIME THEN
+        RAISE EXCEPTION 'Nie można utworzyć rezerwacji na godzinę w przeszłości';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_validate_reservation_date ON reservations;
+CREATE TRIGGER trg_validate_reservation_date
+    BEFORE INSERT ON reservations
+    FOR EACH ROW
+    EXECUTE FUNCTION validate_reservation_date();
+
+-- zapobieganie podwojnej rezerwacji
+CREATE OR REPLACE FUNCTION prevent_double_booking()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS(
+        SELECT 1 FROM reservations
+        WHERE worker_id = NEW.worker_id
+        AND reservation_date = NEW.reservation_date
+        AND reservation_time = NEW.reservation_time
+        AND status IN ('pending', 'confirmed')
+        AND id != COALESCE(NEW.id, 0)
+    ) THEN
+        RAISE EXCEPTION 'Ten termin jest już zarezerwowany';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_prevent_double_booking ON reservations;
+CREATE TRIGGER trg_prevent_double_booking
+    BEFORE INSERT OR UPDATE ON reservations
+    FOR EACH ROW
+    EXECUTE FUNCTION prevent_double_booking();
+
+-- zapobieganie samodzielnej rezerwacji
+CREATE OR REPLACE FUNCTION prevent_self_booking()
+RETURNS TRIGGER AS $$
+DECLARE
+    worker_user_id INTEGER;
+BEGIN
+    SELECT user_id INTO worker_user_id
+    FROM workers
+    WHERE id = NEW.worker_id;
+    
+    IF worker_user_id = NEW.client_id THEN
+        RAISE EXCEPTION 'Nie możesz zarezerwować wizyty u siebie';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_prevent_self_booking ON reservations;
+CREATE TRIGGER trg_prevent_self_booking
+    BEFORE INSERT ON reservations
+    FOR EACH ROW
+    EXECUTE FUNCTION prevent_self_booking();
+
+-- logowanie zmian statusu rezerwacji
+CREATE TABLE IF NOT EXISTS reservation_status_log (
+    id SERIAL PRIMARY KEY,
+    reservation_id INTEGER REFERENCES reservations(id) ON DELETE CASCADE,
+    old_status VARCHAR(20),
+    new_status VARCHAR(20),
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE OR REPLACE FUNCTION log_reservation_status_change()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF OLD.status IS DISTINCT FROM NEW.status THEN
+        INSERT INTO reservation_status_log (reservation_id, old_status, new_status)
+        VALUES (NEW.id, OLD.status, NEW.status);
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_log_status_change ON reservations;
+CREATE TRIGGER trg_log_status_change
+    AFTER UPDATE ON reservations
+    FOR EACH ROW
+    EXECUTE FUNCTION log_reservation_status_change();
+
 INSERT INTO categories (name, slug, icon) VALUES
     ('Elektryka', 'elektryka', 'lightning.svg'),
     ('Hydraulika', 'hydraulika', 'plumbing.svg'),
