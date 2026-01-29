@@ -527,6 +527,180 @@ CREATE TRIGGER trg_log_status_change
     FOR EACH ROW
     EXECUTE FUNCTION log_reservation_status_change();
 
+-- procedury
+
+-- tworzenie rezerwacji z walidacja
+CREATE OR REPLACE FUNCTION create_reservation_safe(
+    p_worker_id INTEGER,
+    p_client_id INTEGER,
+    p_service_id INTEGER,
+    p_date DATE,
+    p_time TIME,
+    p_notes TEXT DEFAULT NULL
+)
+RETURNS INTEGER AS $$
+DECLARE
+    new_reservation_id INTEGER;
+    worker_exists BOOLEAN;
+    client_exists BOOLEAN;
+BEGIN
+    SELECT EXISTS(SELECT 1 FROM workers WHERE id = p_worker_id) INTO worker_exists;
+    IF NOT worker_exists THEN
+        RAISE EXCEPTION 'Fachowiec o podanym ID nie istnieje';
+    END IF;
+    
+    SELECT EXISTS(SELECT 1 FROM users WHERE id = p_client_id AND role = 'client') INTO client_exists;
+    IF NOT client_exists THEN
+        RAISE EXCEPTION 'Klient o podanym ID nie istnieje';
+    END IF;
+    
+    IF NOT check_worker_availability(p_worker_id, p_date, p_time) THEN
+        RAISE EXCEPTION 'Wybrany termin jest juz zajety';
+    END IF;
+    
+    INSERT INTO reservations (worker_id, client_id, service_id, reservation_date, reservation_time, notes)
+    VALUES (p_worker_id, p_client_id, p_service_id, p_date, p_time, p_notes)
+    RETURNING id INTO new_reservation_id;
+    
+    RETURN new_reservation_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- anulowanie rezerwacji z walidacja
+CREATE OR REPLACE FUNCTION cancel_reservation_safe(
+    p_reservation_id INTEGER,
+    p_user_id INTEGER
+)
+RETURNS BOOLEAN AS $$
+DECLARE
+    reservation_record RECORD;
+    is_authorized BOOLEAN := FALSE;
+BEGIN
+    SELECT r.*, w.user_id AS worker_user_id
+    INTO reservation_record
+    FROM reservations r
+    JOIN workers w ON r.worker_id = w.id
+    WHERE r.id = p_reservation_id;
+    
+    IF reservation_record IS NULL THEN
+        RAISE EXCEPTION 'Rezerwacja nie istnieje';
+    END IF;
+    
+    IF reservation_record.client_id = p_user_id OR reservation_record.worker_user_id = p_user_id THEN
+        is_authorized := TRUE;
+    END IF;
+    
+    IF NOT is_authorized THEN
+        RAISE EXCEPTION 'Brak uprawnien do anulowania tej rezerwacji';
+    END IF;
+    
+    IF reservation_record.status NOT IN ('pending', 'confirmed') THEN
+        RAISE EXCEPTION 'Nie mozna anulowac rezerwacji o statusie: %', reservation_record.status;
+    END IF;
+    
+    UPDATE reservations
+    SET status = 'cancelled'
+    WHERE id = p_reservation_id;
+    
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- dodawanie recenzji z aktualizacja ratingu
+CREATE OR REPLACE FUNCTION add_review_safe(
+    p_reservation_id INTEGER,
+    p_client_id INTEGER,
+    p_rating INTEGER,
+    p_comment TEXT DEFAULT NULL
+)
+RETURNS INTEGER AS $$
+DECLARE
+    new_review_id INTEGER;
+    reservation_record RECORD;
+BEGIN
+    SELECT * INTO reservation_record
+    FROM reservations
+    WHERE id = p_reservation_id;
+    
+    IF reservation_record IS NULL THEN
+        RAISE EXCEPTION 'Rezerwacja nie istnieje';
+    END IF;
+    
+    IF reservation_record.client_id != p_client_id THEN
+        RAISE EXCEPTION 'Nie mozesz dodac recenzji do tej rezerwacji';
+    END IF;
+    
+    IF reservation_record.status != 'completed' THEN
+        RAISE EXCEPTION 'Mozna dodac recenzje tylko do zakonczonej rezerwacji';
+    END IF;
+    
+    IF EXISTS(SELECT 1 FROM reviews WHERE reservation_id = p_reservation_id) THEN
+        RAISE EXCEPTION 'Recenzja dla tej rezerwacji juz istnieje';
+    END IF;
+    
+    IF p_rating < 1 OR p_rating > 5 THEN
+        RAISE EXCEPTION 'Ocena musi byc w zakresie 1-5';
+    END IF;
+    
+    INSERT INTO reviews (worker_id, client_id, reservation_id, rating, comment)
+    VALUES (reservation_record.worker_id, p_client_id, p_reservation_id, p_rating, p_comment)
+    RETURNING id INTO new_review_id;
+    
+    RETURN new_review_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- rejestracja fachowca
+CREATE OR REPLACE FUNCTION register_worker_safe(
+    p_email VARCHAR(255),
+    p_password VARCHAR(255),
+    p_name VARCHAR(100),
+    p_phone VARCHAR(20),
+    p_city VARCHAR(100),
+    p_category_id INTEGER,
+    p_description TEXT,
+    p_experience_years INTEGER
+)
+RETURNS INTEGER AS $$
+DECLARE
+    new_user_id INTEGER;
+    new_worker_id INTEGER;
+BEGIN
+    IF EXISTS(SELECT 1 FROM users WHERE email = p_email) THEN
+        RAISE EXCEPTION 'Email jest juz zarejestrowany';
+    END IF;
+    
+    IF NOT EXISTS(SELECT 1 FROM categories WHERE id = p_category_id) THEN
+        RAISE EXCEPTION 'Wybrana kategoria nie istnieje';
+    END IF;
+    
+    INSERT INTO users (email, password, name, role, phone, city)
+    VALUES (p_email, p_password, p_name, 'worker', p_phone, p_city)
+    RETURNING id INTO new_user_id;
+    
+    INSERT INTO workers (user_id, category_id, description, experience_years)
+    VALUES (new_user_id, p_category_id, p_description, p_experience_years)
+    RETURNING id INTO new_worker_id;
+    
+    RETURN new_worker_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- czyszczenie starych prob logowania
+CREATE OR REPLACE FUNCTION cleanup_old_login_attempts(p_days INTEGER DEFAULT 30)
+RETURNS INTEGER AS $$
+DECLARE
+    deleted_count INTEGER;
+BEGIN
+    DELETE FROM login_attempts
+    WHERE attempted_at < NOW() - (p_days || ' days')::INTERVAL;
+    
+    GET DIAGNOSTICS deleted_count = ROW_COUNT;
+    
+    RETURN deleted_count;
+END;
+$$ LANGUAGE plpgsql;
+
 INSERT INTO categories (name, slug, icon) VALUES
     ('Elektryka', 'elektryka', 'lightning.svg'),
     ('Hydraulika', 'hydraulika', 'plumbing.svg'),
