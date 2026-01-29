@@ -179,24 +179,8 @@
       </div>
     </div>
 
-    <script src="/public/scripts/login.js"></script>
-    <script src="/public/scripts/validation.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const roleInputs = document.querySelectorAll('input[name="role"]');
-        const workerFields = document.getElementById('workerFields');
-
-        function toggleWorkerFields() {
-          const selectedRole = document.querySelector('input[name="role"]:checked').value;
-          workerFields.style.display = selectedRole === 'worker' ? 'block' : 'none';
-        }
-
-        roleInputs.forEach(input => {
-          input.addEventListener('change', toggleWorkerFields);
-        });
-
-        toggleWorkerFields();
-      });
-    </script>
+    <script src="/public/scripts/login.js" defer></script>
+    <script src="/public/scripts/validation.js" defer></script>
+    <script src="/public/scripts/register.js" defer></script>
   </body>
 </html>

@@ -1,7 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-    if (!form) return;
+const form = document.querySelector('form');
 
+if (form) {
     const emailInput = form.querySelector('input[name="email"]');
     const passwordInput = form.querySelector('input[name="password"]');
     const confirmedPasswordInput = form.querySelector('input[name="password2"]');
@@ -262,5 +261,5 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
         }
     });
-});
+}
 
