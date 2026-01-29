@@ -246,6 +246,132 @@ FROM reservations r
 GROUP BY r.reservation_date
 ORDER BY r.reservation_date DESC;
 
+-- funkcje
+
+-- oblicza srednia ocene fachowca
+CREATE OR REPLACE FUNCTION calculate_worker_rating(p_worker_id INTEGER)
+RETURNS DECIMAL(2,1) AS $$
+DECLARE
+    avg_rating DECIMAL(2,1);
+BEGIN
+    SELECT COALESCE(ROUND(AVG(rating)::numeric, 1), 0)
+    INTO avg_rating
+    FROM reviews
+    WHERE worker_id = p_worker_id;
+    
+    RETURN avg_rating;
+END;
+$$ LANGUAGE plpgsql;
+
+-- zlicza recenzje fachowca
+CREATE OR REPLACE FUNCTION count_worker_reviews(p_worker_id INTEGER)
+RETURNS INTEGER AS $$
+DECLARE
+    review_count INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    INTO review_count
+    FROM reviews
+    WHERE worker_id = p_worker_id;
+    
+    RETURN review_count;
+END;
+$$ LANGUAGE plpgsql;
+
+-- sprawdza dostepnosc fachowca w danym terminie
+CREATE OR REPLACE FUNCTION check_worker_availability(
+    p_worker_id INTEGER,
+    p_date DATE,
+    p_time TIME
+)
+RETURNS BOOLEAN AS $$
+DECLARE
+    is_available BOOLEAN;
+BEGIN
+    SELECT NOT EXISTS(
+        SELECT 1 FROM reservations
+        WHERE worker_id = p_worker_id
+        AND reservation_date = p_date
+        AND reservation_time = p_time
+        AND status IN ('pending', 'confirmed')
+    ) INTO is_available;
+    
+    RETURN is_available;
+END;
+$$ LANGUAGE plpgsql;
+
+-- sprawdza czy uzytkownik moze dodac recenzje
+CREATE OR REPLACE FUNCTION can_add_review(
+    p_reservation_id INTEGER,
+    p_client_id INTEGER
+)
+RETURNS BOOLEAN AS $$
+DECLARE
+    can_review BOOLEAN;
+BEGIN
+    SELECT EXISTS(
+        SELECT 1 FROM reservations r
+        WHERE r.id = p_reservation_id
+        AND r.client_id = p_client_id
+        AND r.status = 'completed'
+        AND NOT EXISTS(
+            SELECT 1 FROM reviews rv
+            WHERE rv.reservation_id = p_reservation_id
+        )
+    ) INTO can_review;
+    
+    RETURN can_review;
+END;
+$$ LANGUAGE plpgsql;
+
+-- zwraca liczbe nieudanych prob logowania dla danego emaila
+CREATE OR REPLACE FUNCTION get_failed_login_attempts(
+    p_email VARCHAR(255),
+    p_minutes INTEGER DEFAULT 15
+)
+RETURNS INTEGER AS $$
+DECLARE
+    attempt_count INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    INTO attempt_count
+    FROM login_attempts
+    WHERE email = p_email
+    AND success = FALSE
+    AND attempted_at > NOW() - (p_minutes || ' minutes')::INTERVAL;
+    
+    RETURN attempt_count;
+END;
+$$ LANGUAGE plpgsql;
+
+-- generuje podsumowanie statystyk fachowca
+CREATE OR REPLACE FUNCTION get_worker_summary(p_worker_id INTEGER)
+RETURNS TABLE(
+    total_reservations BIGINT,
+    completed_reservations BIGINT,
+    pending_reservations BIGINT,
+    total_reviews BIGINT,
+    avg_rating DECIMAL(2,1),
+    total_earnings DECIMAL(10,2)
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        COUNT(DISTINCT r.id) AS total_reservations,
+        COUNT(DISTINCT CASE WHEN r.status = 'completed' THEN r.id END) AS completed_reservations,
+        COUNT(DISTINCT CASE WHEN r.status = 'pending' THEN r.id END) AS pending_reservations,
+        COUNT(DISTINCT rv.id) AS total_reviews,
+        COALESCE(ROUND(AVG(rv.rating)::numeric, 1), 0::numeric)::DECIMAL(2,1) AS avg_rating,
+        COALESCE(SUM(CASE WHEN r.status = 'completed' THEN s.price ELSE 0 END), 0)::DECIMAL(10,2) AS total_earnings
+    FROM workers w
+    LEFT JOIN reservations r ON w.id = r.worker_id
+    LEFT JOIN reviews rv ON w.id = rv.worker_id
+    LEFT JOIN services s ON r.service_id = s.id
+    WHERE w.id = p_worker_id
+    GROUP BY w.id;
+END;
+$$ LANGUAGE plpgsql;
+
 INSERT INTO categories (name, slug, icon) VALUES
     ('Elektryka', 'elektryka', 'lightning.svg'),
     ('Hydraulika', 'hydraulika', 'plumbing.svg'),
