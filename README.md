@@ -103,6 +103,23 @@ Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
 
 **reservation_status_log** - historia zmian statusow rezerwacji
 
+### Widoki
+
+**v_workers_full** - pelne dane fachowcow z informacjami o uzytkowniku i kategorii
+
+**v_reservations_details** - szczegolowe informacje o rezerwacjach
+
+**v_workers_statistics** - statystyki fachowcow
+
+**v_top_workers** - ranking najlepszych fachowcow
+
+**v_recent_reviews** - ostatnie recenzje
+
+**v_category_statistics** - statystyki kategorii uslug
+
+**v_daily_reservations** - dzienne podsumowanie rezerwacji
+
+
 
 ## Instalacja i uruchomienie
 
