@@ -133,6 +133,22 @@ Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
 
 **get_worker_summary()** - podsumowanie statystyk fachowca
 
+### Wyzwalacze
+
+**trg_update_rating_after_review** - aktualizuje rating fachowca po dodaniu recenzji
+
+**trg_update_rating_after_review_delete** - przelicza rating po usunieciu recenzji
+
+**trg_reservation_updated** - aktualizuje timestamp przy zmianie rezerwacji
+
+**trg_validate_reservation_date** - waliduje date rezerwacji
+
+**trg_prevent_double_booking** - zapobiega podwojnym rezerwacjom
+
+**trg_prevent_self_booking** - blokuje rezerwacje u siebie
+
+**trg_log_status_change** - loguje zmiany statusow rezerwacji
+
 
 ## Instalacja i uruchomienie
 
