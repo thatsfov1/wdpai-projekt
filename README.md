@@ -81,6 +81,28 @@ FixUp/
 Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
 
 
+### Tabele
+
+**users** - dane uzytkownikow (klienci i fachowcy)
+
+**categories** - kategorie uslug
+
+**workers** - profile fachowcow
+
+**services** - uslugi oferowane przez fachowcow
+
+**work_images** - zdjecia prac fachowcow
+
+**reservations** - rezerwacje terminow
+
+**reviews** - recenzje i oceny
+
+**review_images** - zdjecia do recenzji
+
+**login_attempts** - logi prob logowania
+
+**reservation_status_log** - historia zmian statusow rezerwacji
+
 
 ## Instalacja i uruchomienie
 
