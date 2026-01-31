@@ -149,6 +149,17 @@ Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
 
 **trg_log_status_change** - loguje zmiany statusow rezerwacji
 
+### Procedury
+
+**create_reservation_safe()** - tworzenie rezerwacji z walidacja
+
+**cancel_reservation_safe()** - anulowanie rezerwacji z walidacja
+
+**add_review_safe()** - dodawanie recenzji z aktualizacja ratingu
+
+**register_worker_safe()** - rejestracja fachowca
+
+**cleanup_old_login_attempts()** - czyszczenie starych prob logowania
 
 ## Instalacja i uruchomienie
 
