@@ -79,3 +79,34 @@ FixUp/
 ### Diagram ERD
 
 Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
+
+
+
+
+## Funkcjonalnosci
+
+### Dla klientow
+
+- rejestracja i logowanie
+- przegladanie kategorii uslug
+- wyszukiwanie fachowcow po miescie
+- przegladanie profili fachowcow
+- rezerwacja terminu wizyty
+- zarzadzanie rezerwacjami
+- wystawianie recenzji po zakonczonej usludze
+
+### Dla fachowcow
+
+- rejestracja jako fachowiec z wyborem kategorii
+- edycja profilu i opisu
+- dodawanie oferowanych uslug
+- zarzadzanie rezerwacjami (potwierdzanie, anulowanie, zakonczenie)
+- przegladanie otrzymanych recenzji
+
+### Bezpieczenstwo
+
+- hashowanie hasel (bcrypt)
+- ochrona sesji (HttpOnly, Secure, SameSite)
+- prepared statements (ochrona przed SQL Injection)
+- walidacja danych wejsciowych
+- monitorowanie prob logowania
