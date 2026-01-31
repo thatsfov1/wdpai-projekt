@@ -82,6 +82,56 @@ Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
 
 
 
+## Instalacja i uruchomienie
+
+### Wymagania
+
+- Docker
+- Docker Compose
+
+### Uruchomienie
+
+1. Klonowanie repozytorium:
+
+```bash
+git clone <adres-repozytorium>
+cd FixUp
+```
+
+2. Uruchomienie kontenerow:
+
+```bash
+docker-compose up -d
+```
+
+3. Aplikacja dostepna pod adresem:
+
+```
+http://localhost:8080
+```
+
+4. Panel pgAdmin (zarzadzanie baza danych):
+
+```
+http://localhost:5050
+Login: admin@example.com
+Haslo: admin
+```
+
+### Zatrzymanie
+
+```bash
+docker-compose down
+```
+
+### Reset bazy danych
+
+```bash
+docker-compose down -v
+docker-compose up -d
+```
+
+---
 
 ## Funkcjonalnosci
 
