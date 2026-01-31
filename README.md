@@ -119,6 +119,19 @@ Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
 
 **v_daily_reservations** - dzienne podsumowanie rezerwacji
 
+### Funkcje
+
+**calculate_worker_rating()** - oblicza srednia ocene fachowca
+
+**count_worker_reviews()** - zlicza recenzje fachowca
+
+**check_worker_availability()** - sprawdza dostepnosc terminu
+
+**can_add_review()** - sprawdza mozliwosc dodania recenzji
+
+**get_failed_login_attempts()** - liczba nieudanych prob logowania
+
+**get_worker_summary()** - podsumowanie statystyk fachowca
 
 
 ## Instalacja i uruchomienie
