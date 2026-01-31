@@ -73,3 +73,9 @@ FixUp/
     └── reviews/
 ```
 
+
+## Schemat bazy danych
+
+### Diagram ERD
+
+Diagram ERD znajduje sie w pliku `docs/diagramERD.png`.
