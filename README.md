@@ -32,11 +32,11 @@ FixUp to platforma laczaca klientow z fachowcami. Aplikacja umozliwia:
 
 ## Technologie
 
-Backend - PHP 8.2
-Baza danych - PostgreSQL 15           
-Serwer HTTP - Nginx                   
-Konteneryzacja - Docker, Docker Compose
-Frontend - HTML5, CSS3, JavaScript
+* Backend - PHP 8.2
+* Baza danych - PostgreSQL 15           
+* Serwer HTTP - Nginx                   
+* Konteneryzacja - Docker, Docker Compose
+* Frontend - HTML5, CSS3, JavaScript
 
 ---
 
